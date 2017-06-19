@@ -1,6 +1,6 @@
 # usmap
 
-> usmap
+Top colleges in America
 
 ## Build Setup
 
