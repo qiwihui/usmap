@@ -50,6 +50,7 @@
     name: 'usmap',
     data () {
       return {
+        R: '',
         collegeList: [
           {
             "r2016": "1",
@@ -976,7 +977,8 @@
             "location": "New York, NY"
           }
         ],
-        america: {}
+        america: {}, // 全美地图
+        centered: {}, // 选中的州
       }
     },
     mounted: function () {
@@ -985,6 +987,8 @@
     methods: {
       initMap(){
         let R = Raphael("map", 700, 450);
+        this.R = R
+        R.setViewBox(0,0,700,450,true);
         this.paintMap(R);
         //写入文字的样式
         let attr = {
@@ -1309,38 +1313,6 @@
             if (this.america[state]['name'].match(/\b\d{1}\b/)) {
               this.america[state]['text'] = R.text(xx, yy, this.america[state]['name']).attr(textRed);
             }
-            //st[当前版块]
-//            st[0].onmouseover = function () {
-//              colorV = $(this).attr("fill");
-//              if (colorV == "#0171b9") {
-//                return false;
-//              }
-//              //st.animate({fill:textAttr.color, stroke: "#eee"});
-//              //america[state]['text'].toFront();
-//              $(this).attr("fill", "#ccc");
-//              R.safari();
-//            }
-//            st[0].onmouseout = function () {
-//              $(this).attr("fill", colorV);
-//              //st.animate({fill:colorV, stroke: "#eee"});
-//              //america[state]['text'].toFront();
-//              R.safari();
-//            }
-//            st[0].onclick = function () {
-//              if (colorV == "#0171b9") {
-//                return false;
-//              }
-//              let contry = $(this).attr("stroke-linejoin");
-//              this.forTr(2, contry);
-//
-//              //if(isPc==0)
-//              //{
-//              //    $("#mapZZC").hide();
-//              //    document.body.scrollTop=870;
-//              //    document.body.scrollLeft=0;
-//              //    $(".table").offset({top:450});
-//              //}
-//            }
           })(this.america[state]['path'], state);
         }
       },
@@ -1374,15 +1346,15 @@
           "strioke": "#fff",
           "stroke-width": 1,
         };
-        this.america.fujian = {
+        this.america.state1 = {
           name: "MD",
           path: R.path("M662.5,213.883c0-2.697-2.187-4.883-4.884-4.883h-16.232c-2.697,0-4.884,2.186-4.884,4.883v10.234c0,2.696,2.187,4.883,4.884,4.883h16.232c2.697,0,4.884-2.187,4.884-4.883V213.883z").attr(ygQ4).attr("stroke-linejoin", "马里兰州")
         };
-        this.america.guizhou = {
+        this.america.state2 = {
           name: "区域10",
           path: R.path("M265.99,398.751c-5.957-1.735-3.252,1.279-0.339,1.821c2.914,0.543,2.801,1.149,3.764,0.7C270.377,400.823,268.956,399.617,265.99,398.751z").attr(ygQ)
         };
-        this.america.zhejiang = {
+        this.america.state3 = {
           name: "区域11",
           path: R.path("M251.476,396.438c1.358,1.357,2.873,1.434,2.84-1.029c-0.019-1.368-2.492-1.089-2.84-2.676c-0.785-3.581-6.174-0.123-4.815,1.235C250.689,397.996,250.118,395.079,251.476,396.438z").attr(ygQ2)
         };
@@ -1602,149 +1574,269 @@
           name: "",
           path: R.path("M422.104,67.335c-4.199,2.346-18.522,15.682-18.77,17.164c3.047,1.935,12.925-6.297,13.913-4.486c0.987,1.811-4.282,3.951-1.812,5.762c2.47,1.811,3.292-1.317,5.104,0c4.775-6.024,7.574,0,11.855-4.445c3.086-3.204,9.808-10.013,13.665-12.019c3.856-2.007,3.787,2.141,1.646,2.634c-2.141,0.494-6.915,2.634-4.775,6.421c2.14,3.787,4.132-1.69,6.021,0.494c4.845,5.598,7.15,0.891,11.801,5.927c2.927,3.17,3.582-2.964,6.874-3.458c3.293-0.494,5.599,0.658,10.373-2.964c3.463-2.626,5.267,7.244,9.055,3.128c-1.977,0.659-2.717-4.939-1.4-4.857c1.317,0.083,1.481-2.47,0-2.305s-4.314-0.476-2.799-2.881c3.375-5.352-5.186-6.668-3.375-10.208s-1.893-3.21-3.786-2.058c-1.895,1.152-8.728,3.046-12.514-8.726c-1.635-5.085-9.467-0.823-11.772-2.47c-2.306-1.647-6.256-2.305-8.726-2.058c-2.47,0.247,1.07,2.305,2.717,2.058c1.646-0.247,4.857,1.646,2.141,1.399c-2.717-0.247-5.846,4.333-7.655,3.952c-1.565-0.33,2.551-3.293,0.74-4.281s-3.457,3.54-3.622,5.104s-1.811,2.47-1.894,0.741c-0.083-1.729-4.527,0.906-4.115,3.046c0.411,2.14-2.964,3.458-5.104,5.021C426.549,64.372,426.302,64.989,422.104,67.335z M439.474,59.268c0.822,1.152-5.599,6.914-7.574,5.598C430.529,63.953,438.65,58.116,439.474,59.268z").attr(ygQ5).attr("stroke-linejoin", "密歇根州").attr("stroke", "#fff")
         };
-//        for(let item in this.america){
-//          this.addAction(item)
-//        }
+        for (let key in this.america) {
+          if (this.america.hasOwnProperty(key)) {
+            // 添加点击事件
+            this.addAction(this.america[key])
+            // 设置和修正各州的名称位置
+            this.addLabel(this.america[key])
+          }
+        }
       },
-      forTr(thId, contry) {
-        if (contry.match(/[A-Za-z]/)) {
-          switch (contry) {
+      forTr(thId, country) {
+        if (country.match(/[A-Za-z]/)) {
+          switch (country) {
             case 'Seattle':
-              contry = '西雅图';
+              country = '西雅图';
               break;
             case 'San Francisco':
-              contry = '旧金山';
+              country = '旧金山';
               break;
             case 'Los Angeles':
-              contry = '洛杉矶';
+              country = '洛杉矶';
               break;
             case 'San Diego':
-              contry = '圣地亚哥';
+              country = '圣地亚哥';
               break;
             case 'Salt Lake City':
-              contry = '盐湖城';
+              country = '盐湖城';
               break;
             case 'Tucson':
-              contry = '图森';
+              country = '图森';
               break;
             case 'Denver':
-              contry = '丹佛';
+              country = '丹佛';
               break;
             case 'Albuuerque':
-              contry = '阿尔伯克基';
+              country = '阿尔伯克基';
               break;
             case 'Austin':
-              contry = '奥斯汀';
+              country = '奥斯汀';
               break;
             case 'Fort Worth':
-              contry = '沃斯堡';
+              country = '沃斯堡';
               break;
             case 'Dallas':
-              contry = '达拉斯';
+              country = '达拉斯';
               break;
             case 'Kansas city':
-              contry = '堪萨斯城';
+              country = '堪萨斯城';
               break;
             case 'Houstor':
-              contry = '休斯顿';
+              country = '休斯顿';
               break;
             case 'Minneapolis':
-              contry = '明尼阿波利斯';
+              country = '明尼阿波利斯';
               break;
             case 'St Louis':
-              contry = '圣路易斯';
+              country = '圣路易斯';
               break;
             case 'Milwaukee':
-              contry = '密尔沃基';
+              country = '密尔沃基';
               break;
             case 'Chicago':
-              contry = '芝加哥';
+              country = '芝加哥';
               break;
             case 'New Orleans':
-              contry = '新奥尔良';
+              country = '新奥尔良';
               break;
             case 'Indianapolis':
-              contry = '印第安纳波利斯';
+              country = '印第安纳波利斯';
               break;
             case 'Nashvilie':
-              contry = '纳什维尔';
+              country = '纳什维尔';
               break;
             case 'Birmingham':
-              contry = '伯明翰';
+              country = '伯明翰';
               break;
             case 'Ann Arbor':
-              contry = '安娜堡';
+              country = '安娜堡';
               break;
             case 'Chincinnati':
-              contry = '辛辛那提';
+              country = '辛辛那提';
               break;
             case 'Columbus':
-              contry = '哥伦布';
+              country = '哥伦布';
               break;
             case 'Atlanta':
-              contry = '亚特兰大';
+              country = '亚特兰大';
               break;
             case 'Clevland':
-              contry = '克利夫兰';
+              country = '克利夫兰';
               break;
             case 'Pittsburgh':
-              contry = '匹兹堡';
+              country = '匹兹堡';
               break;
             case 'Tampa':
-              contry = '坦帕';
+              country = '坦帕';
               break;
             case 'Charlotte':
-              contry = '夏洛特';
+              country = '夏洛特';
               break;
             case 'Orlando':
-              contry = '奥兰多';
+              country = '奥兰多';
               break;
             case 'Washington DC':
-              contry = '华盛顿特区';
+              country = '华盛顿特区';
               break;
             case 'Albany':
-              contry = '奥尔巴尼';
+              country = '奥尔巴尼';
               break;
             case 'Richmond':
-              contry = '里士满';
+              country = '里士满';
               break;
             case 'Philadelphia':
-              contry = '费城';
+              country = '费城';
               break;
             case 'New York':
-              contry = '纽约';
+              country = '纽约';
               break;
             case 'Providence':
-              contry = '普罗维登斯';
+              country = '普罗维登斯';
               break;
             case 'Boston':
-              contry = '波士顿';
+              country = '波士顿';
               break;
           }
         }
       },
-      addAction(element) {
+      addAction(state) {
+        let element = state['path']
+        let self = this
+        let colorOrigin = element.attr("fill")
         element.mouseover(function () {   //on mouseover change to color X
-          this.attr('fill', '#474b51');
+          if (colorOrigin == "#0171b9") {
+            return false;
+          }
+          this.attr("fill", "#ccc");
         });
         element.mouseout(function () {    //on mouseout change color depending on status
-          if (!this.active)
-            this.attr('fill', 'orange');
-          else
-            this.attr('fill', 'white');
+          this.attr("fill", colorOrigin)
         });
         element.click(function () {
-          this.attr('fill', 'white');   //white should be your color Y
-          this.active = true;           //set it active
-          for (let i = 0; i < elements.length; i++) {
-            if (elements[i] != this) {      //very important, on click we loop through all elements
-              elements[i].active = false;  //and set them inactive and orange.
-              elements[i].attr('fill', 'orange');
-            }
-
+          if (colorOrigin == "#0171b9") {
+            return false;
           }
+          this.centered = state
+          let st = state["path"]
+          let xx = st.getBBox().x + (st.getBBox().width / 2);
+          let yy = st.getBBox().y + (st.getBBox().height / 2);
+          let country = this.attr("stroke-linejoin");
+          // TODO 放大位置
+          // self.R.setViewBox(0, 0, xx, yy, true);
+          self.forTr(2, country);
         });
-      }
+      },
+      addLabel(state){
+        let textAttr = {
+          "fill": "#fff",
+          "font-size": "8px",
+          "cursor": "pointer"
+        };
+        let textRed = {
+          "fill": "red",
+        };
+        let st = state["path"]
+        let xx = st.getBBox().x + (st.getBBox().width / 2);
+        let yy = st.getBBox().y + (st.getBBox().height / 2);
+        switch (state['name']) {
+          case "华盛顿州":
+            xx += 5;
+            yy += 5;
+            break;
+          case "加利福尼亚州":
+            xx -= 15;
+            yy -= 25;
+            break;
+          case "爱达荷州":
+            yy += 25;
+            break;
+          case "阿拉斯加州":
+            xx -= 20;
+            yy -= 20;
+            break;
+          case "密苏里州":
+            yy += 10;
+            break;
+          case "俄克拉荷马州":
+            xx += 15;
+            yy += 10;
+            break;
+          case "德克萨斯州":
+            xx -= 10;
+            yy -= 30;
+            break;
+          case "明尼苏达州":
+            yy -= 20;
+            break;
+          case "威斯康星州":
+            yy -= 20;
+            break;
+          case "伊利诺伊州":
+            yy -= 20;
+            break;
+          case "路易斯安那州":
+            xx -= 10;
+            yy -= 15;
+            break;
+          case "印第安纳州":
+            yy -= 30;
+            break;
+          case "肯塔基州":
+            xx += 20;
+            break;
+          case "密歇根州":
+            xx += 10;
+            yy -= 10;
+            break;
+          case "佐治亚州":
+            yy -= 10;
+            break;
+          case "南卡罗来纳州":
+            yy -= 5;
+            break;
+          case "北卡罗来纳州":
+            xx += 10;
+            yy -= 5;
+            break;
+          case "西弗吉尼亚州":
+            yy += 10;
+            break;
+          case "弗吉尼亚州":
+            xx -= 5;
+            yy += 15;
+            break;
+          case "缅因州":
+            xx -= 2;
+            yy -= 15;
+            break;
+          case "纽约":
+            yy += 10;
+            xx -= 20;
+            break;
+          case "VT":
+            yy -= 2;
+            xx -= 2;
+            break;
+          case "NH":
+            yy -= 2;
+            xx -= 2;
+            break;
+          case "NJ":
+            yy -= 2;
+            xx -= 2;
+            break;
+          case "MD":
+            yy -= 2;
+            xx -= 2;
+            break;
+          default:
+        }
+        state['text'] = this.R.text(xx, yy, state['name']).attr(textAttr);
+        if (state['name'].match(/\b\d{1}\b/)) {
+          state['text'] = this.R.text(xx, yy, state['name']).attr(textRed);
+        }
+      },
     }
   }
 </script>
