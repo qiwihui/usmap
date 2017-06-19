@@ -2,6 +2,10 @@
 
 Top colleges in America
 
+## demo
+
+see [demo](https://qiwihui.com/usmap/index.html)
+
 ## Build Setup
 
 ``` bash
